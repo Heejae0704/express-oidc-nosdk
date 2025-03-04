@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+@theme {
+    --color-okta: #F0E7D7;
+  }

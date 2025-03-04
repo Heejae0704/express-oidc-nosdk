@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/tailwind.css')
+  body
+    div.flex.flex-col.items-center
+      .w-full.bg-okta.flex.text-center.mb-6.flex-col
+        .w-full.text-4xl.p-10.text-center Okta Korea OIDC Workshop App
+        if username
+          div.w-full.bg-black.flex.flex-row.gap-14.justify-center
+            a.text-white.underline(href="/menu/1")
+              p Menu Item 1
+            a.text-white.underline(href="/menu/2")
+              p Menu Item 2
+            a.text-white.underline(href="/menu/3")
+              p Menu Item 3
+            a.text-white.underline(href="/menu/4")
+              p Menu Item 4
+      block content

@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1.text-xl.text-blue-700 로그인 성공
+  p.text-lg #{username}님, 환영합니다!
+  div
+    a(href="/logout")
+      button.py-2.px-4.bg-blue-500.rounded-lg.text-white.mt-4(type="submit") Logout

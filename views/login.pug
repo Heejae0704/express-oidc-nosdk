@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  form(method="post" action="/login")
+    div.flex.flex-col.gap-2
+      div.flex.flex-row.justify-between.items-center.justify-center
+        p.pr-2.text-xl.font-bold.mb-4 로그인이 필요합니다
+      div.flex.flex-row.justify-between.items-center
+        p.pr-2 Username
+        input.px-2.py-1.bg-white.border-2.border-gray-400.rounded-md(type="text" name="username")
+      div.flex.flex-row.justify-between.items-center
+        p.pr-2 Password 
+        input.px-2.py-1.bg-white.border-2.border-gray-400.rounded-md(type="password" name="password")
+      div.flex.w-full.items-center.justify-center.mt-2
+        input.py-2.px-4.bg-blue-500.rounded-lg.text-white(type="submit" value="Login")
