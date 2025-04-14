@@ -66,6 +66,7 @@ app.get("/authorization-code/callback", async function (req, res, next) {
     });
 
     const data = await resp.json();
+    console.log(data);
     console.log("3. Okta에서 전달받은 ID Token: " + data.id_token);
 
     const decodedIdToken = jwtDecode(data.id_token);
@@ -75,6 +76,15 @@ app.get("/authorization-code/callback", async function (req, res, next) {
 
     req.session.user = decodedIdToken.preferred_username;
     req.session.id_token = data.id_token;
+
+    // TODO: cookie에 access token 삽입하기 - Token Exchange에서 사용
+    res.cookie("hanway_okta_access_token", data.access_token);
+
+    // TODO: Read cookies
+    // console.log('Cookies: ', req.cookies)
+
+    // TODO: clearCookie
+    // res.clearCookie('hanway_okta_access_token', { path: '/admin' });
 
     // optional: userinfo 받아오기
     const userInfoResp = await fetch(
@@ -92,7 +102,9 @@ app.get("/authorization-code/callback", async function (req, res, next) {
     console.log("5. /userinfo 호출로 추가로 불러올 수 있는 사용자 정보: ");
     console.log(userInfoData);
 
-    res.redirect("/");
+    console.log("6. 최종 목적지: ");
+    console.log(req.query.state);
+    res.redirect(decodeURIComponent(req.query.state));
   } catch (error) {
     next(createError(500));
   }

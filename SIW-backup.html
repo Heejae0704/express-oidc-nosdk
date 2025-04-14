@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <!-- Google Font added by Heejae -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Styles generated from theme -->
+    <link href="{{themedStylesUrl}}" rel="stylesheet" type="text/css" />
+    <!-- Favicon from theme -->
+    <link rel="shortcut icon" href="{{faviconUrl}}" type="image/x-icon" />
+
+    <title>{{pageTitle}}</title>
+    {{{SignInWidgetResources}}}
+  </head>
+  <body>
+    <div id="login-bg-image-id" class="login-bg-image tb--background"></div>
+    <div id="okta-login-container-wrapper">
+      <div id="okta-login-container"></div>
+    </div>
+
+    <!--
+        "OktaUtil" defines a global OktaUtil object
+        that contains methods used to complete the Okta login flow.
+     -->
+    {{{OktaUtil}}}
+
+    <script type="text/javascript" nonce="{{nonceValue}}">
+      // "config" object contains default widget configuration
+      // with any custom overrides defined in your admin settings.
+      var config = OktaUtil.getSignInWidgetConfig();
+
+      // Render the Okta Sign-In Widget
+      var oktaSignIn = new OktaSignIn(config);
+      oktaSignIn.renderEl(
+        { el: "#okta-login-container" },
+        OktaUtil.completeLogin,
+        function (error) {
+          // Logs errors that occur when configuring the widget.
+          // Remove or replace this with your own custom error handler.
+          console.log(error.message, error);
+        }
+      );
+    </script>
+    <script>
+      function getClientId() {
+        if (!OktaUtil) {
+          console.log("no OktaUtil");
+          return;
+        }
+
+        var requestContext = OktaUtil.getRequestContext();
+
+        // Check all the request Context
+        console.log(requestContext);
+
+        if (
+          requestContext &&
+          requestContext.app &&
+          requestContext.app.value.id
+        ) {
+          return requestContext.app.value.id;
+        }
+      }
+
+      function getAppName() {
+        if (!OktaUtil) return undefined;
+
+        var context = OktaUtil.getRequestContext();
+        return context.app.value.label;
+      }
+
+      var appName = getAppName();
+      console.log(appName);
+      var appNameContainer = document.createElement("div");
+      appNameContainer.classList.add("custom-app-name");
+      appNameContainer.style =
+        "width: 400px; margin-right: 20px; font-size: 52px; font-weight: 300; font-family: 'Open Sans'";
+      appNameContainer.innerHTML = appName;
+
+      var loginContainer = document.getElementById(
+        "okta-login-container-wrapper"
+      );
+      loginContainer.insertBefore(appNameContainer, loginContainer.firstChild);
+
+      // CSS by application client ID
+      var clientId = getClientId();
+      console.log(clientId);
+      if (clientId === "0oaqd9zvdjXwkdXBA697") {
+        // add application-specific CSS
+        var head = document.head;
+        var link = document.createElement("link");
+
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href =
+          "https://heejae.s3.ap-northeast-1.amazonaws.com/approval.css";
+        head.appendChild(link);
+      } else {
+        var head = document.head;
+        var link = document.createElement("link");
+
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = "https://heejae.s3.ap-northeast-1.amazonaws.com/oneway.css";
+        head.appendChild(link);
+      }
+
+      // default to check the persistant session
+      oktaSignIn.on("afterRender", function (context) {
+        // TODO: Check context
+        console.log(context.controller);
+        if (context.controller === "primary-auth") {
+          document.querySelector("input[name='rememberMe']").checked = true;
+          document
+            .querySelector("label[data-se-for-name='rememberMe']")
+            .classList.add("checked");
+          document.querySelector(".custom-checkbox").style = "display:none;";
+        }
+
+        // Order the factors
+        if (document.querySelector("div.authenticator-row")) {
+          var factorList = document.querySelector("div.list-content");
+
+          var ovTotp = document.querySelector("div[data-se='okta_verify-totp'")
+            ?.parentNode.parentNode;
+          var ovPush = document.querySelector("div[data-se='okta_verify-push'")
+            ?.parentNode.parentNode;
+          var ovFastPass = document.querySelector(
+            "div[data-se='okta_verify-signed_nonce'"
+          )?.parentNode.parentNode;
+          var password = document.querySelector("div[data-se='okta_password")
+            ?.parentNode.parentNode;
+
+          console.log(ovTotp);
+          console.log(ovPush);
+          if (ovPush) {
+            factorList.insertBefore(ovPush, factorList.firstChild);
+          }
+          if (ovFastPass) {
+            factorList.insertBefore(ovFastPass, factorList.firstChild);
+          }
+          factorList.appendChild(password);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+html,
+body {
+  height: 100%;
+}
+
+.custom-app-name {
+  color: #051766;
+  text-align: end;
+}
+
+#login-bg-image-id {
+  background-image: url(https://ssosvc.koreanair.com/login/images/bg_login.png);
+}
+
+@media (max-width: 991px) {
+  #okta-login-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  #okta-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 530px;
+    height: 100%;
+  }
+  #okta-sign-in {
+    margin: 100px auto 8px;
+  }
+
+  .okta-sign-in-header,
+  .okta-form-title {
+    visibility: hidden;
+  }
+
+  .button-primary {
+    background-color: rgb(1, 48, 102) !important;
+  }
+
+  #okta-sign-in.auth-container.main-container {
+    margin-top: -100px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    border-bottom: 0;
+    box-shadow: 0 0px 0 hsla(0, 0%, 0%, 0);
+  }
+}
+
+@media (min-width: 992px) {
+  #okta-login-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  #okta-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 530px;
+    height: 100%;
+  }
+  #okta-sign-in {
+    margin: 100px auto 8px;
+  }
+
+  .okta-sign-in-header,
+  .okta-form-title {
+    visibility: hidden;
+  }
+
+  .button-primary {
+    background-color: rgb(1, 48, 102) !important;
+  }
+
+  #okta-sign-in.auth-container.main-container {
+    margin-top: -100px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    border-bottom: 0;
+    box-shadow: 0 0px 0 hsla(0, 0%, 0%, 0);
+  }
+}
+
+.beacon-container {
+  margin-bottom: 40px !important;
+}

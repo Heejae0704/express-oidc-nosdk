@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "tailwind": "npx @tailwindcss/cli -i ./public/stylesheets/style.css -o ./public/stylesheets/tailwind.css --watch"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.9",

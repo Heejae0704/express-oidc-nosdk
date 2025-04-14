@@ -7,6 +7,10 @@ router.get("/", isAuthenticated, function (req, res, next) {
 });
 
 router.get("/", function (req, res, next) {
+  // 0. To see if the original URL is remembered
+  var originalUrl = req.session.originalUrl;
+  console.log("original url before auth redirection: " + originalUrl);
+
   // 1. instead of rendering login, redirect to okta's /authorize endpoint
   // res.render('login');
 
@@ -17,7 +21,9 @@ router.get("/", function (req, res, next) {
   var scopeQuery = "scope=" + "openid%20email%20profile%20groups";
   var redirectUriQuery =
     "redirect_uri=" + "http://localhost:3000/authorization-code/callback";
-  var stateQuery = "state=" + "abcde";
+
+  // send the final destination as state value
+  var stateQuery = "state=" + encodeURIComponent(originalUrl);
 
   var redirectUrl =
     authorizeEndpoint +
